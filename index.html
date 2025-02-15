@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homenagem Melhorada</title>
+    <style>
+        /* Estilos gerais */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fafafa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        /* Corações animados */
+        .heart {
+            position: absolute;
+            font-size: calc(10px + 20 * var(--size));
+            opacity: var(--opacity);
+            animation: float 5s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh);
+                opacity: 0;
+            }
+        }
+
+        /* Post */
+        .post {
+            width: 400px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            margin-top: 20px;
+        }
+
+        /* Cabeçalho do post */
+        .post-header {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+
+        .profile-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Container das fotos */
+        .photo-container {
+            width: 100%;
+            height: 300px;
+            display: flex;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .photo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .photo.active {
+            opacity: 1;
+        }
+
+        /* Áreas clicáveis nos lados da foto */
+        .photo-container::before,
+        .photo-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        .photo-container::before {
+            left: 0;
+        }
+
+        .photo-container::after {
+            right: 0;
+        }
+
+        /* Bolinhas indicadoras */
+        .dots {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+            background-color: #fff;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .dot.active {
+            background-color: #333;
+        }
+
+        /* Rodapé do post */
+        .post-footer {
+            padding: 10px;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+        }
+
+        /* Player de música */
+        .music-player {
+            background: #282828;
+            color: white;
+            border-radius: 10px;
+            padding: 10px;
+            width: 250px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .music-info {
+            font-size: 14px;
+            margin-right: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .music-controls button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .music-controls button:hover {
+            color: #1db954;
+        }
+    </style>
+</head>
+<body>
+    <!-- Áudios das músicas -->
+    <audio id="music1" src="musica1.mp3" type="audio/mpeg"></audio>
+    <audio id="music2" src="musica2.mp3" type="audio/mpeg"></audio>
+
+    <!-- Player de música -->
+    <div class="music-player">
+        <div class="music-info" id="music-name">Música 1</div>
+        <div class="music-controls">
+            <button id="toggle-music">▶️</button>
+            <button id="next-music">⏭️</button>
+        </div>
+    </div>
+
+    <!-- Post com fotos e legendas -->
+    <div class="post">
+        <!-- Cabeçalho do post com foto de perfil e nome -->
+        <div class="post-header">
+            <img src="perfil.jpg" alt="Foto de Perfil" class="profile-pic">
+            <span class="profile-name">Meu Amor</span>
+        </div>
+
+        <!-- Container das fotos -->
+        <div class="photo-container">
+            <img src="imagen1.jpg" class="photo active" alt="Foto 1">
+            <img src="imagen2.jpg" class="photo" alt="Foto 2">
+            <img src="imagen3.jpg" class="photo" alt="Foto 3">
+            <img src="imagen4.jpg" class="photo" alt="Foto 4">
+            <img src="imagen5.jpg" class="photo" alt="Foto 5">
+        </div>
+
+        <!-- Bolinhas indicadoras -->
+        <div class="dots" id="dots-container">
+            <!-- As bolinhas serão geradas dinamicamente via JavaScript -->
+        </div>
+
+        <!-- Rodapé do post com legenda -->
+        <div class="post-footer">
+            <p id="caption">Cada momento ao seu lado é um tesouro que guardo no coração. ❤️</p>
+        </div>
+    </div>
+
+    <script>
+        // Elementos do DOM
+        const photos = document.querySelectorAll(".photo");
+        const dotsContainer = document.getElementById("dots-container");
+        const captions = [
+            "Cada momento ao seu lado é um tesouro que guardo no coração. Seu sorriso ilumina meus dias, e seu amor preenche cada espaço da minha alma. Você é a razão pela qual eu acredito em felicidade eterna. Eu te amo hoje, amanhã e para sempre. ❤️",
+            "Nosso amor é como uma sinfonia, cada dia uma nova melodia que nos encanta. Nas suas risadas, encontro a música mais doce. Nos seus abraços, encontro o meu refúgio. Você é a minha inspiração e o meu maior sonho. 💖",
+            "Juntos, construímos um mundo onde só existem sorrisos e sonhos compartilhados. Cada olhar seu me faz acreditar que o amor verdadeiro existe. Você é a minha paz, a minha alegria e o meu tudo. Eu te amo além das palavras. 💘",
+            "Nada no universo é tão forte quanto o laço que nos une. Você é a minha estrela guia, o meu porto seguro e o meu maior tesouro. Ao seu lado, eu sou completa. Obrigada por ser o amor da minha vida. 💞",
+            "Eu te amo mais do que todas as estrelas no céu e todas as areias na praia. Cada dia ao seu lado é um presente que eu guardo com carinho. Você é a razão do meu sorriso e a luz que ilumina o meu caminho. Para sempre sua. 💓"
+        ];
+
+        let currentIndex = 0;
+
+        // Função para criar as bolinhas indicadoras
+        function createDots() {
+            photos.forEach((_, index) => {
+                const dot = document.createElement("div");
+                dot.classList.add("dot");
+                if (index === currentIndex) dot.classList.add("active");
+                dot.addEventListener("click", () => changePhoto(index - currentIndex));
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        // Função para atualizar as bolinhas indicadoras
+        function updateDots() {
+            const dots = document.querySelectorAll(".dot");
+            dots.forEach((dot, index) => {
+                dot.classList.toggle("active", index === currentIndex);
+            });
+        }
+
+        // Função para mudar as fotos
+        function changePhoto(direction) {
+            photos[currentIndex].classList.remove("active");
+            currentIndex = (currentIndex + direction + photos.length) % photos.length;
+            photos[currentIndex].classList.add("active");
+            document.getElementById("caption").textContent = captions[currentIndex];
+            updateDots();
+        }
+
+        // Áreas clicáveis nos lados da foto
+        const photoContainer = document.querySelector(".photo-container");
+        photoContainer.addEventListener("click", (event) => {
+            const rect = photoContainer.getBoundingClientRect();
+            const clickX = event.clientX - rect.left;
+            if (clickX < rect.width / 2) {
+                changePhoto(-1); // Clique na metade esquerda
+            } else {
+                changePhoto(1); // Clique na metade direita
+            }
+        });
+
+        // Suporte a gestos de toque (swipe)
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        photoContainer.addEventListener("touchstart", (event) => {
+            touchStartX = event.touches[0].clientX;
+        });
+
+        photoContainer.addEventListener("touchend", (event) => {
+            touchEndX = event.changedTouches[0].clientX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeDistance = touchEndX - touchStartX;
+            if (swipeDistance > 50) {
+                changePhoto(-1); // Swipe para a direita
+            } else if (swipeDistance < -50) {
+                changePhoto(1); // Swipe para a esquerda
+            }
+        }
+
+        // Cria as bolinhas indicadoras
+        createDots();
+
+        // Função para criar corações animados
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = "❤️";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.setProperty("--size", Math.random());
+            heart.style.setProperty("--opacity", Math.random() * 0.7 + 0.3);
+            heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 700);
+
+        // Controle de música
+        const music1 = document.getElementById("music1");
+        const music2 = document.getElementById("music2");
+        const toggleMusicBtn = document.getElementById("toggle-music");
+        const nextMusicBtn = document.getElementById("next-music");
+        const musicName = document.getElementById("music-name");
+
+        const songs = [
+            { audio: music1, name: "Amor e Fé" },
+            { audio: music2, name: "Preta" }
+        ];
+
+        let currentSongIndex = 0; // Começa com a primeira música
+        let currentSong = songs[currentSongIndex].audio;
+
+        // Atualiza o nome da música no player
+        musicName.textContent = songs[currentSongIndex].name;
+
+        // Função para alternar entre play e pause
+        toggleMusicBtn.addEventListener("click", () => {
+            if (currentSong.paused) {
+                currentSong.play();
+                toggleMusicBtn.textContent = "⏸️";
+            } else {
+                currentSong.pause();
+                toggleMusicBtn.textContent = "▶️";
+            }
+        });
+
+        // Função para trocar de música (próxima)
+        nextMusicBtn.addEventListener("click", () => {
+            currentSong.pause();
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            currentSong = songs[currentSongIndex].audio;
+            currentSong.play();
+            musicName.textContent = songs[currentSongIndex].name;
+            toggleMusicBtn.textContent = "⏸️";
+        });
+
+        // Reproduz a música automaticamente ao clicar na página
+        document.body.addEventListener("click", () => {
+            if (currentSong.paused) {
+                currentSong.play();
+                toggleMusicBtn.textContent = "⏸️";
+            }
+        });
+    </script>
+</body>
+</html>
