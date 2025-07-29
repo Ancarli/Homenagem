@@ -183,6 +183,39 @@
             color: #1db954;
         }
 
+        /* Contador de tempo */
+        .time-counter {
+            background: #ff6b6b;
+            color: white;
+            border-radius: 10px;
+            padding: 15px;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            font-size: 16px;
+        }
+
+        .time-counter h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+
+        .time-values {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .time-value {
+            margin: 5px;
+        }
+
+        .time-value span {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
         /* Melhorias para mobile */
         @media (max-width: 480px) {
             .photo-container {
@@ -196,10 +229,35 @@
             body {
                 padding: 10px;
             }
+            
+            .time-counter {
+                padding: 10px;
+                font-size: 14px;
+            }
+            
+            .time-counter h3 {
+                font-size: 16px;
+            }
+            
+            .time-value span {
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Contador de tempo desde 01/10/2020 -->
+    <div class="time-counter">
+        <h3>Nosso Tempo Juntos</h3>
+        <div class="time-values">
+            <div class="time-value"><span id="years">0</span> anos</div>
+            <div class="time-value"><span id="months">0</span> meses</div>
+            <div class="time-value"><span id="days">0</span> dias</div>
+            <div class="time-value"><span id="hours">0</span> horas</div>
+            <div class="time-value"><span id="minutes">0</span> minutos</div>
+        </div>
+    </div>
+
     <!-- Áudios das músicas (substitua pelas suas músicas) -->
     <audio id="music1" src="musica1.mp3" type="audio/mpeg"></audio>
     <audio id="music2" src="musica2.mp3" type="audio/mpeg"></audio>
@@ -419,6 +477,46 @@
                 playMusic();
             }
         }, { once: true });
+
+        // Contador de tempo desde 01/10/2020
+        function updateTimeCounter() {
+            const startDate = new Date('2020-10-01T00:00:00');
+            const currentDate = new Date();
+            
+            // Calcula a diferença em milissegundos
+            let diff = currentDate - startDate;
+            
+            // Calcula anos
+            const years = currentDate.getFullYear() - startDate.getFullYear();
+            
+            // Ajusta para meses completos desde o último aniversário
+            let months = currentDate.getMonth() - startDate.getMonth();
+            if (months < 0 || (months === 0 && currentDate.getDate() < startDate.getDate())) {
+                months += 12;
+            }
+            
+            // Calcula dias completos
+            const tempDate = new Date(currentDate);
+            tempDate.setMonth(currentDate.getMonth() - months);
+            tempDate.setFullYear(currentDate.getFullYear() - years);
+            
+            const days = Math.floor((currentDate - tempDate) / (1000 * 60 * 60 * 24));
+            
+            // Horas, minutos e segundos
+            const hours = currentDate.getHours();
+            const minutes = currentDate.getMinutes();
+            
+            // Atualiza os elementos HTML
+            document.getElementById('years').textContent = years;
+            document.getElementById('months').textContent = months;
+            document.getElementById('days').textContent = days;
+            document.getElementById('hours').textContent = hours;
+            document.getElementById('minutes').textContent = minutes;
+        }
+
+        // Atualiza o contador imediatamente e a cada minuto
+        updateTimeCounter();
+        setInterval(updateTimeCounter, 60000);
     </script>
 </body>
 </html>
