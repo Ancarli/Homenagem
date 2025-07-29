@@ -123,12 +123,16 @@
         }
 
         .time-together {
-            font-size: 14px;
+            font-size: 13px;
             color: #666;
             text-align: left;
-            margin-top: 10px;
+            margin-top: 8px;
             padding-top: 8px;
             border-top: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
         .time-together span {
@@ -139,12 +143,12 @@
         @media (max-width: 480px) {
             .photo-container { height: 250px; }
             .post-footer p { font-size: 13px; }
+            .time-together { font-size: 12px; }
             body { padding: 10px; }
         }
     </style>
 </head>
 <body>
-    <!-- Post com fotos e legendas -->
     <div class="post">
         <div class="post-header">
             <img src="perfil.jpg" alt="Foto de Perfil" class="profile-pic">
@@ -158,6 +162,22 @@
             <img src="imagen4.jpg" class="photo" alt="Foto 4">
             <img src="imagen5.jpg" class="photo" alt="Foto 5">
         </div>
+
+        <div class="dots" id="dots-container"></div>
+
+        <div class="post-footer">
+            <p id="caption">Cada momento ao seu lado é um tesouro que guardo no coração. ❤️</p>
+            <div class="time-together">
+                Juntos a <span id="years">0a</span>
+                <span id="months">0m</span>
+                <span id="days">0d</span>
+                <span id="hours">0h</span>
+                <span id="minutes">0min</span>
+                <span id="seconds">0s</span>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Galeria de fotos
         const photos = document.querySelectorAll(".photo");
@@ -233,34 +253,45 @@
         }
         setInterval(createHeart, 700);
 
-        // Contador de tempo desde 01/10/2020
+        // Contador de tempo desde 01/10/2020 12:00:00
         function updateTimeTogether() {
-            const startDate = new Date('2020-10-01T00:00:00');
+            const startDate = new Date('2020-10-01T12:00:00');
             const currentDate = new Date();
             
+            // Calcula anos
             let years = currentDate.getFullYear() - startDate.getFullYear();
+            
+            // Ajusta meses
             let months = currentDate.getMonth() - startDate.getMonth();
-            let days = currentDate.getDate() - startDate.getDate();
-
-            if (days < 0) {
-                months--;
-                // Último dia do mês anterior
-                const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
-                days += lastDay;
-            }
-
-            if (months < 0) {
+            if (months < 0 || (months === 0 && currentDate.getDate() < startDate.getDate())) {
                 years--;
                 months += 12;
             }
-
-            document.getElementById('years').textContent = years;
-            document.getElementById('months').textContent = months;
-            document.getElementById('days').textContent = days;
+            
+            // Calcula dias
+            const tempDate = new Date(startDate);
+            tempDate.setFullYear(startDate.getFullYear() + years);
+            tempDate.setMonth(startDate.getMonth() + months);
+            
+            let days = Math.floor((currentDate - tempDate) / (1000 * 60 * 60 * 24));
+            
+            // Calcula horas, minutos e segundos
+            const hours = currentDate.getHours();
+            const minutes = currentDate.getMinutes();
+            const seconds = currentDate.getSeconds();
+            
+            // Atualiza o display
+            document.getElementById('years').textContent = years + 'a';
+            document.getElementById('months').textContent = months + 'm';
+            document.getElementById('days').textContent = days + 'd';
+            document.getElementById('hours').textContent = hours + 'h';
+            document.getElementById('minutes').textContent = minutes + 'min';
+            document.getElementById('seconds').textContent = seconds + 's';
         }
 
+        // Atualiza imediatamente e depois a cada segundo
         updateTimeTogether();
-        setInterval(updateTimeTogether, 86400000); // Atualiza diariamente
+        setInterval(updateTimeTogether, 1000);
     </script>
 </body>
 </html>
