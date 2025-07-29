@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Homenagem Melhorada</title>
+    <title>Nosso Amor</title>
     <style>
-        /* Estilos gerais */
         body {
             font-family: Arial, sans-serif;
             background-color: #fafafa;
@@ -22,7 +21,6 @@
             touch-action: manipulation;
         }
 
-        /* Corações animados */
         .heart {
             position: absolute;
             font-size: calc(10px + 20 * var(--size));
@@ -33,17 +31,10 @@
         }
 
         @keyframes float {
-            0% {
-                transform: translateY(100vh);
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-10vh);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
         }
 
-        /* Post */
         .post {
             width: 100%;
             max-width: 400px;
@@ -56,7 +47,6 @@
             margin-top: 20px;
         }
 
-        /* Cabeçalho do post */
         .post-header {
             display: flex;
             align-items: center;
@@ -79,7 +69,6 @@
             color: #333;
         }
 
-        /* Container das fotos */
         .photo-container {
             width: 100%;
             height: 300px;
@@ -99,11 +88,8 @@
             background-color: #f5f5f5;
         }
 
-        .photo.active {
-            opacity: 1;
-        }
+        .photo.active { opacity: 1; }
 
-        /* Bolinhas indicadoras */
         .dots {
             display: flex;
             justify-content: center;
@@ -121,11 +107,8 @@
             transition: background-color 0.3s;
         }
 
-        .dot.active {
-            background-color: #333;
-        }
+        .dot.active { background-color: #333; }
 
-        /* Rodapé do post */
         .post-footer {
             padding: 10px;
             background-color: #fff;
@@ -139,148 +122,35 @@
             text-align: left;
         }
 
-        /* Player de música */
-        .music-player {
-            background: #282828;
-            color: white;
-            border-radius: 10px;
-            padding: 10px;
-            width: 100%;
-            max-width: 250px;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .music-info {
+        .time-together {
             font-size: 14px;
-            margin-right: 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            flex-grow: 1;
+            color: #666;
             text-align: left;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px solid #eee;
         }
 
-        .music-controls {
-            display: flex;
-            gap: 5px;
-        }
-
-        .music-controls button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 5px;
-            min-width: 30px;
-        }
-
-        .music-controls button:hover {
-            color: #1db954;
-        }
-
-        /* Contador de tempo */
-        .time-counter {
-            background: #ff6b6b;
-            color: white;
-            border-radius: 10px;
-            padding: 15px;
-            width: 100%;
-            max-width: 300px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            font-size: 16px;
-        }
-
-        .time-counter h3 {
-            margin: 0 0 10px 0;
-            font-size: 18px;
-        }
-
-        .time-values {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-        }
-
-        .time-value {
-            margin: 5px;
-        }
-
-        .time-value span {
+        .time-together span {
             font-weight: bold;
-            font-size: 18px;
+            color: #333;
         }
 
-        /* Melhorias para mobile */
         @media (max-width: 480px) {
-            .photo-container {
-                height: 250px;
-            }
-            
-            .post-footer p {
-                font-size: 13px;
-            }
-            
-            body {
-                padding: 10px;
-            }
-            
-            .time-counter {
-                padding: 10px;
-                font-size: 14px;
-            }
-            
-            .time-counter h3 {
-                font-size: 16px;
-            }
-            
-            .time-value span {
-                font-size: 16px;
-            }
+            .photo-container { height: 250px; }
+            .post-footer p { font-size: 13px; }
+            body { padding: 10px; }
         }
     </style>
 </head>
 <body>
-    <!-- Contador de tempo desde 01/10/2020 -->
-    <div class="time-counter">
-        <h3>Nosso Tempo Juntos</h3>
-        <div class="time-values">
-            <div class="time-value"><span id="years">0</span> anos</div>
-            <div class="time-value"><span id="months">0</span> meses</div>
-            <div class="time-value"><span id="days">0</span> dias</div>
-            <div class="time-value"><span id="hours">0</span> horas</div>
-            <div class="time-value"><span id="minutes">0</span> minutos</div>
-        </div>
-    </div>
-
-    <!-- Áudios das músicas (substitua pelas suas músicas) -->
-    <audio id="music1" src="musica1.mp3" type="audio/mpeg"></audio>
-    <audio id="music2" src="musica2.mp3" type="audio/mpeg"></audio>
-
-    <!-- Player de música -->
-    <div class="music-player">
-        <div class="music-info" id="music-name">Música 1</div>
-        <div class="music-controls">
-            <button id="prev-music">⏮️</button>
-            <button id="toggle-music">▶️</button>
-            <button id="next-music">⏭️</button>
-        </div>
-    </div>
-
     <!-- Post com fotos e legendas -->
     <div class="post">
-        <!-- Cabeçalho do post com foto de perfil e nome -->
         <div class="post-header">
             <img src="perfil.jpg" alt="Foto de Perfil" class="profile-pic">
             <span class="profile-name">Meu Amor</span>
         </div>
 
-        <!-- Container das fotos -->
         <div class="photo-container">
             <img src="imagen1.jpg" class="photo active" alt="Foto 1">
             <img src="imagen2.jpg" class="photo" alt="Foto 2">
@@ -289,32 +159,30 @@
             <img src="imagen5.jpg" class="photo" alt="Foto 5">
         </div>
 
-        <!-- Bolinhas indicadoras -->
-        <div class="dots" id="dots-container">
-            <!-- As bolinhas serão geradas dinamicamente via JavaScript -->
-        </div>
+        <div class="dots" id="dots-container"></div>
 
-        <!-- Rodapé do post com legenda -->
         <div class="post-footer">
             <p id="caption">Cada momento ao seu lado é um tesouro que guardo no coração. ❤️</p>
+            <div class="time-together">
+                Juntos há <span id="years">0</span> anos, <span id="months">0</span> meses e <span id="days">0</span> dias
+            </div>
         </div>
     </div>
 
     <script>
-        // Elementos do DOM
+        // Galeria de fotos
         const photos = document.querySelectorAll(".photo");
         const dotsContainer = document.getElementById("dots-container");
         const captions = [
-            "Cada momento ao seu lado é um tesouro que guardo no coração. Seu sorriso ilumina meus dias, e seu amor preenche cada espaço da minha alma. Você é a razão pela qual eu acredito em felicidade eterna. Eu te amo hoje, amanhã e para sempre. ❤️",
-            "Nosso amor é como uma sinfonia, cada dia uma nova melodia que nos encanta. Nas suas risadas, encontro a música mais doce. Nos seus abraços, encontro o meu refúgio. Você é a minha inspiração e o meu maior sonho. 💖",
-            "Juntos, construímos um mundo onde só existem sorrisos e sonhos compartilhados. Cada olhar seu me faz acreditar que o amor verdadeiro existe. Você é a minha paz, a minha alegria e o meu tudo. Eu te amo além das palavras. 💘",
-            "Nada no universo é tão forte quanto o laço que nos une. Você é a minha estrela guia, o meu porto seguro e o meu maior tesouro. Ao seu lado, eu sou completo. Obrigada por ser o amor da minha vida. 💞",
-            "Eu te amo mais do que todas as estrelas no céu e todas as areias na praia. Cada dia ao seu lado é um presente que eu guardo com carinho. Você é a razão do meu sorriso e a luz que ilumina o meu caminho. Para sempre seu. 💓"
+            "Cada momento ao seu lado é um tesouro que guardo no coração. Seu sorriso ilumina meus dias, e seu amor preenche cada espaço da minha alma. ❤️",
+            "Nosso amor é como uma sinfonia, cada dia uma nova melodia que nos encanta. Nas suas risadas, encontro a música mais doce. 💖",
+            "Juntos, construímos um mundo onde só existem sorrisos e sonhos compartilhados. Você é a minha paz, a minha alegria e o meu tudo. 💘",
+            "Você é a minha estrela guia, o meu porto seguro e o meu maior tesouro. Ao seu lado, eu sou completo. 💞",
+            "Eu te amo mais do que todas as estrelas no céu. Você é a razão do meu sorriso e a luz que ilumina o meu caminho. 💓"
         ];
 
         let currentIndex = 0;
 
-        // Função para criar as bolinhas indicadoras
         function createDots() {
             photos.forEach((_, index) => {
                 const dot = document.createElement("div");
@@ -325,7 +193,6 @@
             });
         }
 
-        // Função para atualizar as bolinhas indicadoras
         function updateDots() {
             const dots = document.querySelectorAll(".dot");
             dots.forEach((dot, index) => {
@@ -333,7 +200,6 @@
             });
         }
 
-        // Função para mudar as fotos
         function changePhoto(direction) {
             photos[currentIndex].classList.remove("active");
             currentIndex = (currentIndex + direction + photos.length) % photos.length;
@@ -342,37 +208,29 @@
             updateDots();
         }
 
-        // Suporte a gestos de toque (swipe)
+        // Suporte a gestos de toque
         let touchStartX = 0;
         let touchEndX = 0;
 
         const photoContainer = document.querySelector(".photo-container");
         
-        photoContainer.addEventListener("touchstart", (event) => {
-            touchStartX = event.touches[0].clientX;
+        photoContainer.addEventListener("touchstart", (e) => {
+            touchStartX = e.touches[0].clientX;
         }, { passive: true });
 
-        photoContainer.addEventListener("touchmove", (event) => {
-            touchEndX = event.touches[0].clientX;
+        photoContainer.addEventListener("touchmove", (e) => {
+            touchEndX = e.touches[0].clientX;
         }, { passive: true });
 
         photoContainer.addEventListener("touchend", () => {
-            handleSwipe();
+            const swipeDistance = touchEndX - touchStartX;
+            if (swipeDistance > 50) changePhoto(-1);
+            else if (swipeDistance < -50) changePhoto(1);
         }, { passive: true });
 
-        function handleSwipe() {
-            const swipeDistance = touchEndX - touchStartX;
-            if (swipeDistance > 50) {
-                changePhoto(-1); // Swipe para a direita
-            } else if (swipeDistance < -50) {
-                changePhoto(1); // Swipe para a esquerda
-            }
-        }
-
-        // Cria as bolinhas indicadoras
         createDots();
 
-        // Função para criar corações animados
+        // Corações animados
         function createHeart() {
             const heart = document.createElement("div");
             heart.classList.add("heart");
@@ -382,141 +240,38 @@
             heart.style.setProperty("--opacity", Math.random() * 0.7 + 0.3);
             heart.style.animationDuration = Math.random() * 2 + 3 + "s";
             document.body.appendChild(heart);
-
             setTimeout(() => heart.remove(), 5000);
         }
         setInterval(createHeart, 700);
 
-        // Controle de música melhorado
-        const music1 = document.getElementById("music1");
-        const music2 = document.getElementById("music2");
-        const toggleMusicBtn = document.getElementById("toggle-music");
-        const nextMusicBtn = document.getElementById("next-music");
-        const prevMusicBtn = document.getElementById("prev-music");
-        const musicName = document.getElementById("music-name");
-
-        const songs = [
-            { audio: music1, name: "Amor e Fé" },
-            { audio: music2, name: "Preta" }
-        ];
-
-        let currentSongIndex = 0;
-        let currentSong = songs[currentSongIndex].audio;
-        let isPlaying = false;
-
-        // Atualiza o nome da música no player
-        function updateMusicInfo() {
-            musicName.textContent = songs[currentSongIndex].name;
-        }
-
-        // Função para tocar música
-        function playMusic() {
-            currentSong.play()
-                .then(() => {
-                    isPlaying = true;
-                    toggleMusicBtn.textContent = "⏸️";
-                    updateMusicInfo();
-                })
-                .catch(error => {
-                    console.log("Autoplay prevented. Click to start playback.");
-                    // Mostra alerta para usuário interagir
-                    alert("Por favor, toque na tela para iniciar a música.");
-                });
-        }
-
-        // Função para pausar música
-        function pauseMusic() {
-            currentSong.pause();
-            isPlaying = false;
-            toggleMusicBtn.textContent = "▶️";
-        }
-
-        // Função para alternar entre play e pause
-        function togglePlayPause() {
-            if (isPlaying) {
-                pauseMusic();
-            } else {
-                playMusic();
-            }
-        }
-
-        // Função para mudar de música
-        function changeSong(direction) {
-            pauseMusic();
-            currentSongIndex = (currentSongIndex + direction + songs.length) % songs.length;
-            currentSong = songs[currentSongIndex].audio;
-            if (isPlaying) {
-                playMusic();
-            } else {
-                updateMusicInfo();
-            }
-        }
-
-        // Event listeners para controles de música
-        toggleMusicBtn.addEventListener("click", togglePlayPause);
-        nextMusicBtn.addEventListener("click", () => changeSong(1));
-        prevMusicBtn.addEventListener("click", () => changeSong(-1));
-
-        // Atualiza o botão quando a música termina
-        songs.forEach(song => {
-            song.audio.addEventListener("ended", () => {
-                if (isPlaying) {
-                    changeSong(1);
-                    playMusic();
-                }
-            });
-        });
-
-        // Inicializa o player
-        updateMusicInfo();
-
-        // Permite tocar música após interação do usuário
-        document.body.addEventListener("click", () => {
-            // Política de autoplay requer interação do usuário
-            if (currentSong.paused && !isPlaying) {
-                playMusic();
-            }
-        }, { once: true });
-
         // Contador de tempo desde 01/10/2020
-        function updateTimeCounter() {
+        function updateTimeTogether() {
             const startDate = new Date('2020-10-01T00:00:00');
             const currentDate = new Date();
             
-            // Calcula a diferença em milissegundos
-            let diff = currentDate - startDate;
-            
-            // Calcula anos
-            const years = currentDate.getFullYear() - startDate.getFullYear();
-            
-            // Ajusta para meses completos desde o último aniversário
+            let years = currentDate.getFullYear() - startDate.getFullYear();
             let months = currentDate.getMonth() - startDate.getMonth();
-            if (months < 0 || (months === 0 && currentDate.getDate() < startDate.getDate())) {
+            let days = currentDate.getDate() - startDate.getDate();
+
+            if (days < 0) {
+                months--;
+                // Último dia do mês anterior
+                const lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 0).getDate();
+                days += lastDay;
+            }
+
+            if (months < 0) {
+                years--;
                 months += 12;
             }
-            
-            // Calcula dias completos
-            const tempDate = new Date(currentDate);
-            tempDate.setMonth(currentDate.getMonth() - months);
-            tempDate.setFullYear(currentDate.getFullYear() - years);
-            
-            const days = Math.floor((currentDate - tempDate) / (1000 * 60 * 60 * 24));
-            
-            // Horas, minutos e segundos
-            const hours = currentDate.getHours();
-            const minutes = currentDate.getMinutes();
-            
-            // Atualiza os elementos HTML
+
             document.getElementById('years').textContent = years;
             document.getElementById('months').textContent = months;
             document.getElementById('days').textContent = days;
-            document.getElementById('hours').textContent = hours;
-            document.getElementById('minutes').textContent = minutes;
         }
 
-        // Atualiza o contador imediatamente e a cada minuto
-        updateTimeCounter();
-        setInterval(updateTimeCounter, 60000);
+        updateTimeTogether();
+        setInterval(updateTimeTogether, 86400000); // Atualiza diariamente
     </script>
 </body>
 </html>
