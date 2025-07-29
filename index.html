@@ -120,6 +120,7 @@
             font-size: 14px;
             line-height: 1.4;
             text-align: left;
+            color: #333;
         }
 
         .time-together {
@@ -140,15 +141,73 @@
             color: #333;
         }
 
+        .music-player {
+            background: #f8f8f8;
+            color: #333;
+            border-radius: 20px;
+            padding: 10px 15px;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        .music-info {
+            font-size: 14px;
+            margin-right: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+            text-align: left;
+            color: #333;
+        }
+
+        .music-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .music-controls button {
+            background: none;
+            border: none;
+            color: #333;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 5px;
+            min-width: 30px;
+            transition: color 0.2s;
+        }
+
+        .music-controls button:hover {
+            color: #ff6b6b;
+        }
+
         @media (max-width: 480px) {
             .photo-container { height: 250px; }
             .post-footer p { font-size: 13px; }
             .time-together { font-size: 12px; }
+            .music-player { max-width: 280px; }
             body { padding: 10px; }
         }
     </style>
 </head>
 <body>
+    <!-- Player de Música -->
+    <div class="music-player">
+        <div class="music-info" id="music-name">Nossa Música</div>
+        <div class="music-controls">
+            <button id="prev-music">⏮</button>
+            <button id="toggle-music">▶</button>
+            <button id="next-music">⏭</button>
+        </div>
+    </div>
+
+    <!-- Post com fotos e legendas -->
     <div class="post">
         <div class="post-header">
             <img src="perfil.jpg" alt="Foto de Perfil" class="profile-pic">
@@ -177,6 +236,10 @@
             </div>
         </div>
     </div>
+
+    <!-- Áudios das músicas -->
+    <audio id="music1" src="musica1.mp3"></audio>
+    <audio id="music2" src="musica2.mp3"></audio>
 
     <script>
         // Galeria de fotos
@@ -289,9 +352,90 @@
             document.getElementById('seconds').textContent = seconds + 's';
         }
 
-        // Atualiza imediatamente e depois a cada segundo
+        // Player de música
+        const music1 = document.getElementById("music1");
+        const music2 = document.getElementById("music2");
+        const toggleMusicBtn = document.getElementById("toggle-music");
+        const nextMusicBtn = document.getElementById("next-music");
+        const prevMusicBtn = document.getElementById("prev-music");
+        const musicName = document.getElementById("music-name");
+
+        const songs = [
+            { audio: music1, name: "Nossa Música 1" },
+            { audio: music2, name: "Nossa Música 2" }
+        ];
+
+        let currentSongIndex = 0;
+        let currentSong = songs[currentSongIndex].audio;
+        let isPlaying = false;
+
+        function updateMusicInfo() {
+            musicName.textContent = songs[currentSongIndex].name;
+        }
+
+        function playMusic() {
+            currentSong.play()
+                .then(() => {
+                    isPlaying = true;
+                    toggleMusicBtn.textContent = "⏸";
+                    updateMusicInfo();
+                })
+                .catch(error => {
+                    console.log("Autoplay prevented. Click to start playback.");
+                });
+        }
+
+        function pauseMusic() {
+            currentSong.pause();
+            isPlaying = false;
+            toggleMusicBtn.textContent = "▶";
+        }
+
+        function togglePlayPause() {
+            if (isPlaying) {
+                pauseMusic();
+            } else {
+                playMusic();
+            }
+        }
+
+        function changeSong(direction) {
+            pauseMusic();
+            currentSongIndex = (currentSongIndex + direction + songs.length) % songs.length;
+            currentSong = songs[currentSongIndex].audio;
+            if (isPlaying) {
+                playMusic();
+            } else {
+                updateMusicInfo();
+            }
+        }
+
+        // Event listeners para controles de música
+        toggleMusicBtn.addEventListener("click", togglePlayPause);
+        nextMusicBtn.addEventListener("click", () => changeSong(1));
+        prevMusicBtn.addEventListener("click", () => changeSong(-1));
+
+        songs.forEach(song => {
+            song.audio.addEventListener("ended", () => {
+                if (isPlaying) {
+                    changeSong(1);
+                    playMusic();
+                }
+            });
+        });
+
+        // Inicialização
+        updateMusicInfo();
         updateTimeTogether();
         setInterval(updateTimeTogether, 1000);
+
+        // Permite tocar música após interação do usuário
+        document.body.addEventListener("click", function initMusic() {
+            if (currentSong.paused && !isPlaying) {
+                playMusic();
+            }
+            document.body.removeEventListener("click", initMusic);
+        }, { once: true });
     </script>
 </body>
 </html>
